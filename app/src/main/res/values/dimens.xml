@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margemTela">16dp</dimen>
+    <dimen name="espacoSecao">16dp</dimen>
+    <dimen name="cantoCartao">8dp</dimen>
+    <dimen name="elevacaoCartao">2dp</dimen>
+    <dimen name="paddingCartao">12dp</dimen>
+    <dimen name="espacoBotaoFixo">80dp</dimen>
+</resources>
