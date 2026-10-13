@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ajustes do painel para tablets e telas grandes -->
+    <dimen name="margemTela">24dp</dimen>
+    <dimen name="espacoSecao">24dp</dimen>
+    <dimen name="paddingCartao">16dp</dimen>
+    <dimen name="alturaTopo">72dp</dimen>
+    <dimen name="alturaRodape">72dp</dimen>
+    <dimen name="tamanhoAnel">210dp</dimen>
+    <dimen name="tamanhoContagem">68sp</dimen>
+    <dimen name="alturaMapa">140dp</dimen>
+    <dimen name="larguraSparkline">220dp</dimen>
+    <dimen name="alturaPanico">72dp</dimen>
+</resources>

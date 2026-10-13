@@ -7,4 +7,30 @@
     <color name="verdeMonitorando">#FF4CAF50</color>
     <color name="vermelhoStatus">#FFE53935</color>
     <color name="textoSecao">#FF9E9E9E</color>
+
+    <!-- paleta da tela de alerta de queda -->
+    <color name="deepForest">#FF184848</color>
+    <color name="richTeal">#FF006060</color>
+    <color name="primaryTeal">#FF007878</color>
+    <color name="limeAccent">#FFA8C030</color>
+    <color name="sandCream">#FFF0F0D8</color>
+    <color name="sandCream70">#B3F0F0D8</color>
+    <color name="bordaTealTranslucida">#80007878</color>
+
+    <!-- paleta extra do painel SensorGuard -->
+    <color name="surfaceDim">#FF001717</color>
+    <color name="surfaceEscuro">#FF000C0C</color>
+    <color name="cinzaTeal">#FFBDC9C8</color>
+    <color name="primaryClaro">#FF7BD5D5</color>
+    <color name="secondaryContainer">#FF005F5F</color>
+    <color name="erroTeal">#FFFFB4AB</color>
+    <color name="bordaSuave">#66007878</color>
+    <color name="limeTranslucido">#33A8C030</color>
+    <color name="deepForestTranslucido">#E6184848</color>
+    <color name="cortinaAlerta">#E6001717</color>
+
+    <!-- tons usados pela troca automatica claro/escuro -->
+    <color name="cartaoClaro">#FFFFFFFF</color>
+    <color name="caixaClara">#FFE4E4CC</color>
+    <color name="textoClaroSecundario">#FF4A5C5C</color>
 </resources>

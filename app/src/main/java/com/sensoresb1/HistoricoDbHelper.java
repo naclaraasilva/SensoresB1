@@ -57,11 +57,9 @@ public class HistoricoDbHelper extends SQLiteOpenHelper {
                 null, null, null, null, "quando DESC");
         try {
             while (cursor.moveToNext()) {
-                String tipo = cursor.getString(0);
                 String descricao = cursor.getString(1);
                 long quando = cursor.getLong(2);
-                itens.add(tipo.toUpperCase(Locale.getDefault()) + " - "
-                        + formato.format(new Date(quando)) + "\n" + descricao);
+                itens.add(descricao + " - " + formato.format(new Date(quando)));
             }
         } finally {
             cursor.close();

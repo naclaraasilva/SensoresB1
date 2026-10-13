@@ -2,473 +2,2042 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/raizPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- conteudo rolavel do painel -->
     <ScrollView
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/deepForest"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/alturaRodape">
 
         <LinearLayout
-            android:id="@+id/layoutSensores"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/margemTela">
 
-            <!-- Topo: nome do usuario + status -->
-            <EditText
-                android:id="@+id/edtNome"
+            <!-- Header: Perfil Monitorado e Status Ativo -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cartaoPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nomeHint"
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:textSize="20sp" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
-            <TextView
-                android:id="@+id/txtStatusMonitor"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@string/usuarioMonitorado"
+                                android:src="@drawable/ic_pessoa"
+                                app:tint="@color/cinzaTeal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:letterSpacing="0.08"
+                                android:text="@string/usuarioMonitorado"
+                                android:textAllCaps="true"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/fundo_badge"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="8dp"
+                            android:paddingTop="3dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="3dp">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:background="@drawable/circulo_primary" />
+
+                            <TextView
+                                android:id="@+id/txtStatusMonitor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/monitorandoAtivamente"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_campo"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/circulo_rich">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/titularDispositivo"
+                                android:src="@drawable/ic_pessoa"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/titularDispositivo"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <EditText
+                                android:id="@+id/edtNome"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/nomeHint"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                android:padding="0dp"
+                                android:textColor="@color/sandCream"
+                                android:textColorHint="@color/cinzaTeal"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/btnEditarTitular"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/circulo_rich"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/editarTitular"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cinzaTeal" />
+                        </FrameLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Secao 1: Sensores em Tempo Real -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/monitorando"
-                android:textColor="@color/verdeMonitorando"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
 
-            <!-- Secao: sensores -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tituloSensores"
-                android:textColor="@color/textoSecao"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/tituloSensores"
+                    android:src="@drawable/ic_sensor"
+                    app:tint="@color/limeAccent" />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:text="@string/tituloSensores"
+                    android:textColor="@color/sandCream"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/taxaSensores"
+                    android:textColor="@color/cinzaTeal"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Acelerometro -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoAcelerometro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTituloAceleracao"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloAcelerometro"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtAceleracao"
-                        android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:background="@drawable/circulo_primary">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/acelerometroTriaxial"
+                                    android:src="@drawable/ic_vibration"
+                                    app:tint="@color/limeAccent" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/txtTituloAceleracao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:text="@string/acelerometroTriaxial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/fundo_pill"
+                            android:orientation="horizontal"
+                            android:paddingStart="8dp"
+                            android:paddingTop="2dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="2dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/statusNormal"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/caixaAcelerometro"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/vetorResultante"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/txtAceleracao"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:fontFamily="monospace"
+                                android:gravity="end"
+                                android:maxLines="1"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeMinTextSize="9sp"
+                                app:autoSizeStepGranularity="1sp"
+                                app:autoSizeTextType="uniform" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoX"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/barraX"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="6dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="0"
+                                android:progressBackgroundTint="@color/richTeal"
+                                android:progressTint="@color/primaryClaro" />
+
+                            <TextView
+                                android:id="@+id/txtAceleracaoX"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="monospace"
+                                android:gravity="end"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoY"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/barraY"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="6dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="0"
+                                android:progressBackgroundTint="@color/richTeal"
+                                android:progressTint="@color/limeAccent" />
+
+                            <TextView
+                                android:id="@+id/txtAceleracaoY"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="monospace"
+                                android:gravity="end"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoZ"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <ProgressBar
+                                android:id="@+id/barraZ"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="6dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:max="100"
+                                android:progress="0"
+                                android:progressBackgroundTint="@color/richTeal"
+                                android:progressTint="@color/primaryTeal" />
+
+                            <TextView
+                                android:id="@+id/txtAceleracaoZ"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="monospace"
+                                android:gravity="end"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/oscilacaoLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <ImageView
+                                android:layout_width="@dimen/larguraSparkline"
+                                android:layout_height="20dp"
+                                android:contentDescription="@string/oscilacaoLabel"
+                                android:src="@drawable/ic_sparkline"
+                                app:tint="@color/limeAccent" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Giroscopio -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoGiroscopio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTituloGiroscopio"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloGiroscopio"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtGiroscopio"
-                        android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/circulo_primary">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/giroscopioRotacao"
+                                android:src="@drawable/ic_rotation"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/txtTituloGiroscopio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/giroscopioRotacao"
+                            android:textColor="@color/sandCream"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/fundo_pill"
+                            android:orientation="horizontal"
+                            android:paddingStart="8dp"
+                            android:paddingTop="2dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="2dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/statusEstavel"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/caixaGiroscopio"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoX"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtGiroscopioX"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoY"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtGiroscopioY"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/eixoZ"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtGiroscopioZ"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cartaoProximidade"
+            <!-- Proximidade e Luminosidade -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cartaoProximidade"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/richTeal"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:contentPadding="12dp"
+                    app:strokeColor="@color/bordaSuave"
+                    app:strokeWidth="1dp">
 
-                    <TextView
-                        android:id="@+id/txtTituloProximidade"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloProximidade"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtProximidade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cartaoLuminosidade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@string/proximidadeLabel"
+                                android:src="@drawable/ic_radar"
+                                app:tint="@color/limeAccent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                            <TextView
+                                android:id="@+id/txtTituloProximidade"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/proximidadeLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtProximidade"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/valorInicial"
+                            android:textColor="@color/sandCream"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/longeDesobstruido"
+                            android:textColor="@color/limeAccent"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cartaoLuminosidade"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/richTeal"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:contentPadding="12dp"
+                    app:strokeColor="@color/bordaSuave"
+                    app:strokeWidth="1dp">
 
-                    <TextView
-                        android:id="@+id/txtTituloLuminosidade"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloLuminosidade"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtLuminosidade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@string/luminosidadeLabel"
+                                android:src="@drawable/ic_light"
+                                app:tint="@color/limeAccent" />
+
+                            <TextView
+                                android:id="@+id/txtTituloLuminosidade"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/luminosidadeLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtLuminosidade"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/valorInicial"
+                            android:textColor="@color/sandCream"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ambienteIluminado"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Pressao e Temperatura -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoPressao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtTituloPressao"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/circulo_primary">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/pressaoBarometrica"
+                                android:src="@drawable/ic_compress"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtTituloPressao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/pressaoBarometrica"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtPressao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloPressao"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="6dp">
 
-                    <TextView
-                        android:id="@+id/txtPressao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@string/termometroLabel"
+                            android:src="@drawable/ic_thermostat"
+                            app:tint="@color/limeAccent" />
 
-                    <TextView
-                        android:id="@+id/txtTemperatura"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="20sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/termometroLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtTemperatura"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Secao: localizacao e bateria -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Secao 2: Localizacao e Bateria -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tituloLocalizacaoBateria"
-                android:textColor="@color/textoSecao"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/tituloLocalizacaoBateria"
+                    android:src="@drawable/ic_local"
+                    app:tint="@color/limeAccent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/tituloLocalizacaoBateria"
+                    android:textColor="@color/sandCream"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Cartao Localizacao -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoLocalizacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTituloLocalizacao"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloLocalizacao"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtLatitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txtTituloLocalizacao"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/coordenadasGeograficas"
+                            android:textColor="@color/sandCream"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/txtLongitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/fundo_pill"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="8dp"
+                            android:paddingTop="2dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="2dp">
 
-                    <TextView
-                        android:id="@+id/txtVelocidade"
-                        android:layout_width="wrap_content"
+                            <View
+                                android:layout_width="6dp"
+                                android:layout_height="6dp"
+                                android:background="@drawable/circulo_primary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:fontFamily="monospace"
+                                android:text="@string/gpsPrecisao"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/caixaMapa"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/alturaMapa"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@string/coordenadasGeograficas"
+                            android:src="@drawable/ic_local"
+                            app:tint="@color/limeAccent" />
+
+                        <TextView
+                            android:id="@+id/txtVelocidade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="monospace"
+                            android:text="@string/paradoLabel"
+                            android:textColor="@color/sandCream"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/caixaLocalizacao"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/latitudeLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtLatitude"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="28dp"
+                            android:background="@color/bordaSuave" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/longitudeLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtLongitude"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="monospace"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Cartao Dispositivo e Bateria -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoDispositivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTituloDispositivo"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloDispositivo"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtBateria"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txtTituloDispositivo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/dispositivoVinculado"
+                            android:textColor="@color/sandCream"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/txtDeviceId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txtDeviceId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:text="@string/valorInicial"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtModelo"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/caixaDispositivo"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/valorInicial"
-                        android:textSize="16sp" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hardwareLabel"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtModelo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtBateria"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/saudeOtima"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Secao: status da API -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Secao 3: Status da API e Deteccao -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tituloStatusApi"
-                android:textColor="@color/textoSecao"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/tituloStatusApi"
+                    android:src="@drawable/ic_cloud_sync"
+                    app:tint="@color/limeAccent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/tituloStatusApi"
+                    android:textColor="@color/sandCream"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cartaoQueda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:contentPadding="12dp">
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTituloQueda"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/caixaQueda"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tituloQueda"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/fundo_caixa"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/txtQueda"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/semQueda"
-                        android:textSize="18sp" />
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circulo_rich">
 
-                    <TextView
-                        android:id="@+id/txtStatusApi"
-                        android:layout_width="wrap_content"
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/algoritmoImpacto"
+                                android:src="@drawable/ic_check"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtTituloQueda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/algoritmoImpacto"
+                                android:textColor="@color/cinzaTeal"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtQueda"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/nenhumaQuedaDetectada"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@string/semQueda"
+                            android:src="@drawable/ic_check"
+                            app:tint="@color/limeAccent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/statusInicial"
-                        android:textSize="18sp" />
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp">
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:background="@drawable/circulo_primary" />
+
+                        <TextView
+                            android:id="@+id/txtStatusApi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:text="@string/statusInicial"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:text="TLS 1.3"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Secao: seguranca e clima -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Secao 4: Seguranca e Clima -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tituloSeguranca"
-                android:textColor="@color/textoSecao"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
 
-            <Button
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/tituloSeguranca"
+                    android:src="@drawable/ic_security"
+                    app:tint="@color/limeAccent" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:text="@string/tituloSeguranca"
+                    android:textColor="@color/sandCream"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnSimularQueda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fundo_pill"
+                    android:minHeight="32dp"
+                    android:minWidth="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/btnSimularQueda"
+                    android:textAllCaps="false"
+                    android:textColor="@color/limeAccent"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Clima Local -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cartaoClima"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/circulo_primary">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/condicoesAtmosfericas"
+                            android:src="@drawable/ic_weather"
+                            app:tint="@color/limeAccent" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/condicoesAtmosfericas"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txtClima"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/climaInicial"
+                            android:textColor="@color/sandCream"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Check-in Automatico -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cartaoCheckin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/richTeal"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:contentPadding="12dp"
+                app:strokeColor="@color/bordaSuave"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/circulo_primary">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/checkinCardTitulo"
+                            android:src="@drawable/ic_timer"
+                            app:tint="@color/limeAccent" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/checkinCardTitulo"
+                            android:textColor="@color/sandCream"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/checkinCardSub"
+                            android:textColor="@color/cinzaTeal"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/swCheckin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Gerenciar Contatos -->
+            <LinearLayout
                 android:id="@+id/btnContatos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="@string/btnContatos"
-                android:textSize="16sp" />
+                android:background="@drawable/fundo_botao_secundario"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
-            <Button
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/circulo_primary">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/contatosCardTitulo"
+                        android:src="@drawable/ic_pessoa"
+                        app:tint="@color/limeAccent" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contatosCardTitulo"
+                        android:textColor="@color/sandCream"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contatosCardSub"
+                        android:textColor="@color/limeAccent"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/contatosCardTitulo"
+                    android:src="@drawable/ic_history"
+                    app:tint="@color/cinzaTeal" />
+            </LinearLayout>
+
+            <!-- Historico -->
+            <LinearLayout
                 android:id="@+id/btnHistorico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/btnHistorico"
-                android:textSize="16sp" />
+                android:background="@drawable/fundo_botao_secundario"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/swCheckin"
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/circulo_primary">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/historicoCardTitulo"
+                        android:src="@drawable/ic_history"
+                        app:tint="@color/cinzaTeal" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/historicoCardTitulo"
+                        android:textColor="@color/sandCream"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/historicoCardSub"
+                        android:textColor="@color/cinzaTeal"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/historicoCardTitulo"
+                    android:src="@drawable/ic_history"
+                    app:tint="@color/cinzaTeal" />
+            </LinearLayout>
+
+            <!-- Botao de Panico -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="@string/checkinSwitch"
-                android:textSize="18sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtClima"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/climaInicial"
-                android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btnPanico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fundo_panico"
+                    android:minHeight="@dimen/alturaPanico"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:text="@string/textoPanico"
+                    android:textColor="@color/deepForest"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <!-- Botao de simular queda, menor -->
-            <Button
-                android:id="@+id/btnSimularQueda"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="12dp"
-                android:text="@string/btnSimularQueda"
-                android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <!-- Botao de panico grande no rodape -->
-            <Button
-                android:id="@+id/btnPanico"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/vermelhoPanico"
-                android:minHeight="64dp"
-                android:text="@string/btnPanico"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:contentDescription="@string/panicoAviso"
+                        android:src="@drawable/ic_aviso"
+                        app:tint="@color/cinzaTeal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/panicoAviso"
+                        android:textColor="@color/cinzaTeal"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Overlay de alerta de queda -->
+    <!-- rodape de navegacao -->
     <LinearLayout
+        android:id="@+id/navRodape"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/alturaRodape"
+        android:layout_gravity="bottom"
+        android:background="@drawable/fundo_rodape"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/navPainel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/navPainel"
+                android:src="@drawable/ic_sensor"
+                app:tint="@color/limeAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/navPainel"
+                android:textColor="@color/limeAccent"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navAlerta"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/navAlerta"
+                android:src="@drawable/ic_aviso"
+                app:tint="@color/cinzaTeal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/navAlerta"
+                android:textColor="@color/cinzaTeal"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navHistorico"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/navHistorico"
+                android:src="@drawable/ic_history"
+                app:tint="@color/cinzaTeal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/navHistorico"
+                android:textColor="@color/cinzaTeal"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Tela de alerta de queda (overlay em tela cheia) -->
+    <FrameLayout
         android:id="@+id/painelQueda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fundoAlerta"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:background="@color/cortinaAlerta"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quedaDetectadaTitulo"
-            android:textColor="@color/vermelhoStatus"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/enviandoAlerta"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txtContagem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/contagemInicial"
-            android:textColor="@color/white"
-            android:textSize="72sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnEstouBem"
+        <ScrollView
+            android:id="@+id/rolagemAlerta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:minHeight="64dp"
-            android:text="@string/estouBemCancelar"
-            android:textSize="20sp" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fundo_card_alerta"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- cabecalho do alerta -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/circulo_rich">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/marcaApp"
+                                android:src="@drawable/ic_sensor"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/marcaApp"
+                            android:textColor="@color/sandCream"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/fundo_pill_alerta"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="4dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@string/bateriaLabel"
+                                android:src="@drawable/ic_bateria"
+                                app:tint="@color/limeAccent" />
+
+                            <TextView
+                                android:id="@+id/txtBateriaAlerta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- status critico -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/fundo_pill_alerta"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp">
+
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/circulo_primary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/statusCritico"
+                            android:textAllCaps="true"
+                            android:textColor="@color/limeAccent"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@string/statusCritico"
+                            android:src="@drawable/ic_aviso"
+                            app:tint="@color/limeAccent" />
+                    </LinearLayout>
+
+                    <!-- titulo da queda -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/circulo_rich">
+
+                            <ImageView
+                                android:layout_width="34dp"
+                                android:layout_height="34dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/quedaTituloCurto"
+                                android:src="@drawable/ic_emergencia"
+                                app:tint="@color/limeAccent" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/quedaTituloCurto"
+                            android:textColor="@color/sandCream"
+                            android:textSize="26sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:maxWidth="280dp"
+                            android:text="@string/enviandoAlerta"
+                            android:textColor="@color/sandCream70"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <!-- contagem regressiva com anel -->
+                    <FrameLayout
+                        android:layout_width="@dimen/tamanhoAnel"
+                        android:layout_height="@dimen/tamanhoAnel"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/circulo_rich">
+
+                        <com.sensoresb1.AnelContagem
+                            android:id="@+id/anelContagem"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtContagem"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif-black"
+                                android:includeFontPadding="false"
+                                android:text="@string/contagemInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="@dimen/tamanhoContagem"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:letterSpacing="0.1"
+                                android:text="@string/segundosLabel"
+                                android:textAllCaps="true"
+                                android:textColor="@color/limeAccent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <!-- detalhes do evento -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/fundo_caixa"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/circulo_escuro">
+
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/alertaAcelerometroLabel"
+                                    android:src="@drawable/ic_velocidade"
+                                    app:tint="@color/limeAccent" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="@string/alertaAcelerometroLabel"
+                                android:textColor="@color/sandCream70"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtGMaxAlerta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/deepForest" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/circulo_escuro">
+
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@string/alertaLocalizacaoLabel"
+                                    android:src="@drawable/ic_local"
+                                    app:tint="@color/primaryTeal" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:text="@string/alertaLocalizacaoLabel"
+                                android:textColor="@color/sandCream70"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txtLocalAlerta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/valorInicial"
+                                android:textColor="@color/sandCream"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- acoes -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEstouBem"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="12dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/estouBemCancelar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/deepForest"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/limeAccent"
+                        app:cornerRadius="30dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSocorroImediato"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/btnSocorroImediato"
+                        android:textAllCaps="true"
+                        android:textColor="@color/sandCream"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primaryTeal"
+                        app:cornerRadius="26dp"
+                        app:icon="@drawable/ic_telefone"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/sandCream" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
 </FrameLayout>

@@ -6,4 +6,13 @@
     <dimen name="elevacaoCartao">2dp</dimen>
     <dimen name="paddingCartao">12dp</dimen>
     <dimen name="espacoBotaoFixo">80dp</dimen>
+
+    <!-- tamanhos estruturais do painel, ajustados por tipo de tela -->
+    <dimen name="alturaTopo">64dp</dimen>
+    <dimen name="alturaRodape">64dp</dimen>
+    <dimen name="tamanhoAnel">160dp</dimen>
+    <dimen name="tamanhoContagem">56sp</dimen>
+    <dimen name="alturaMapa">96dp</dimen>
+    <dimen name="larguraSparkline">140dp</dimen>
+    <dimen name="alturaPanico">64dp</dimen>
 </resources>

@@ -26,7 +26,7 @@ public class HistoricoActivity extends AppCompatActivity {
                 txtVazio.setText(R.string.historicoVazio);
             } else {
                 lista.setAdapter(new ArrayAdapter<>(this,
-                        android.R.layout.simple_list_item_1, itens));
+                        R.layout.item_historico, R.id.txtItemEvento, itens));
             }
         } catch (Exception e) {
             // qualquer falha no banco mostra lista vazia
