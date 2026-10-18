@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deepForest"
@@ -7,28 +8,165 @@
     android:orientation="vertical"
     android:padding="@dimen/margemTela">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- topo com botao de voltar e titulo -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/historicoTitulo"
-        android:textColor="@color/sandCream"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/btnVoltar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/fundo_quadrado"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/voltar"
+                android:rotation="180"
+                android:src="@drawable/ic_seta"
+                app:tint="@color/sandCream" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historicoTitulo"
+                android:textColor="@color/sandCream"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/historicoSubtitulo"
+                android:textColor="@color/sandCream70"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- filtros por tipo de evento -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/linhaFiltros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/filtroTodas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/fundo_filtro_ativo"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+                android:text="@string/filtroTodas"
+                android:textColor="@color/textoLime"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/filtroQuedas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/fundo_pill_escura"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+                android:text="@string/filtroQuedas"
+                android:textColor="@color/sandCream70"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/filtroFalsos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/fundo_pill_escura"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+                android:text="@string/filtroFalsos"
+                android:textColor="@color/sandCream70"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/filtroPanico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/fundo_pill_escura"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+                android:text="@string/filtroPanico"
+                android:textColor="@color/sandCream70"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/filtroCheckin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fundo_pill_escura"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="14dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+                android:text="@string/filtroCheckin"
+                android:textColor="@color/sandCream70"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/txtHistoricoVazio"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
         android:textColor="@color/cinzaTeal"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:visibility="gone" />
 
     <ListView
         android:id="@+id/listaEventos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_weight="1"
         android:divider="@null"
         android:dividerHeight="0dp" />

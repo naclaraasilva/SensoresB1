@@ -122,6 +122,12 @@ public class DetectorQueda {
         ouvinte.onQuedaDetectada(gMax / GRAVIDADE);
     }
 
+    // libera para uma nova deteccao; chamado quando o alerta termina
+    public void rearmar() {
+        ultimoDisparo = 0;
+        emAlerta = false;
+    }
+
     // dispara uma sequencia falsa de queda para testar a tela
     public void simularQueda() {
         ultimoDisparo = 0;

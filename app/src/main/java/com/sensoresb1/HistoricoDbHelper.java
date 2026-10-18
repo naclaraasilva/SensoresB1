@@ -6,11 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 // guarda o historico local de eventos (queda, panico, cancelado)
 public class HistoricoDbHelper extends SQLiteOpenHelper {
@@ -47,24 +44,31 @@ public class HistoricoDbHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABELA, null, valores);
     }
 
-    // devolve os eventos do mais novo para o mais antigo, ja formatados
-    public List<String> listar() {
-        List<String> itens = new ArrayList<>();
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", new Locale("pt", "BR"));
+    // um evento do historico, com os campos separados para a tela montar
+    public static class Evento {
+        public String tipo;
+        public String descricao;
+        public long quando;
+    }
 
+    // devolve os eventos do mais novo para o mais antigo
+    public List<Evento> listarEventos() {
+        List<Evento> eventos = new ArrayList<>();
         Cursor cursor = getReadableDatabase().query(TABELA,
                 new String[]{"tipo", "descricao", "quando"},
                 null, null, null, null, "quando DESC");
         try {
             while (cursor.moveToNext()) {
-                String descricao = cursor.getString(1);
-                long quando = cursor.getLong(2);
-                itens.add(descricao + " - " + formato.format(new Date(quando)));
+                Evento evento = new Evento();
+                evento.tipo = cursor.getString(0);
+                evento.descricao = cursor.getString(1);
+                evento.quando = cursor.getLong(2);
+                eventos.add(evento);
             }
         } finally {
             cursor.close();
         }
-        return itens;
+        return eventos;
     }
 
     // atalho seguro: falha no banco nao pode derrubar o app

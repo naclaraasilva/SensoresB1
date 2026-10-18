@@ -33,4 +33,10 @@
     <color name="cartaoClaro">#FFFFFFFF</color>
     <color name="caixaClara">#FFE4E4CC</color>
     <color name="textoClaroSecundario">#FF4A5C5C</color>
+
+    <!-- paleta extra do novo front da tela inicial -->
+    <color name="surfaceLowest">#FF0E2E2E</color>
+    <color name="sandCream80">#CCF0F0D8</color>
+    <color name="textoLime">#FF181E00</color>
+    <color name="fundoIconeLime">#26181E00</color>
 </resources>

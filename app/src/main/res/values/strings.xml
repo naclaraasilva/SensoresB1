@@ -58,7 +58,7 @@
     <string name="formatoImpacto">Impacto súbito: %1$.1f g (Crítico)</string>
     <string name="formatoLocalAlerta">Lat: %1$.5f   Long: %2$.5f</string>
     <string name="localIndisponivel">Localização indisponível</string>
-    <string name="formatoDeviceId">ID: %1$s</string>
+    <string name="formatoDeviceId">Dispositivo: %1$s</string>
     <string name="formatoModelo">Modelo: %1$s</string>
     <string name="formatoQueda">Queda detectada! gMax: %1$.2f g</string>
 
@@ -126,7 +126,7 @@
     <string name="apiConectada">API Conectada (Nuvem Segura)</string>
     <string name="condicoesAtmosfericas">Condicoes Atmosfericas</string>
     <string name="checkinCardTitulo">Check-in Automatico de Seguranca</string>
-    <string name="checkinCardSub">Confirmacao a cada 4 horas</string>
+    <string name="checkinCardSub">Pergunta a cada 15 minutos se voce esta bem</string>
     <string name="contatosCardTitulo">Gerenciar Contatos de Emergencia</string>
     <string name="contatosCardSub">3 contatos prioritarios configurados</string>
     <string name="historicoCardTitulo">Ver Historico de Quedas</string>
@@ -136,6 +136,37 @@
     <string name="navPainel">Painel</string>
     <string name="navAlerta">Alerta</string>
     <string name="navHistorico">Historico</string>
+    <!-- textos da tela de historico -->
+    <string name="historicoSubtitulo">Todos os eventos registrados no aparelho</string>
+    <string name="voltar">Voltar</string>
+    <string name="filtroTodas">Todas</string>
+    <string name="filtroQuedas">Quedas</string>
+    <string name="filtroFalsos">Falsos Positivos</string>
+    <string name="filtroPanico">Pânico</string>
+    <string name="filtroCheckin">Check-in</string>
+    <string name="tipoQueda">Queda Confirmada</string>
+    <string name="tipoFalso">Falso Positivo</string>
+    <string name="tipoPanico">Botão de Pânico</string>
+    <string name="tipoCheckin">Check-in</string>
+    <string name="tipoOutro">Evento</string>
+    <string name="historicoVazioFiltro">Nenhum evento neste filtro.</string>
+
+    <!-- textos do novo front da tela inicial -->
+    <string name="formatoOnline">Online • %1$d%%</string>
+    <string name="formatoRelogio">Ao Vivo • %1$s</string>
+    <string name="iniciaisPadrao">SG</string>
+    <string name="bannerMonitorando">Monitoramento Ativo em Tempo Real</string>
+    <string name="tempoRealLabel">Tempo Real</string>
+    <string name="protecaoAtiva">Proteção Ativa 360°</string>
+    <string name="protecaoSub">Sem anomalias detectadas no momento</string>
+    <string name="localizacaoTitulo">Localização em Tempo Real</string>
+    <string name="sinal4g">Sinal Celular 4G/LTE Ativo</string>
+    <string name="verNoMapa">Ver no Mapa</string>
+    <string name="btnSimularTitulo">Simular Queda (Teste em 3s)</string>
+    <string name="btnSimularSub">Dispara rotina de validação do acelerômetro</string>
+    <string name="simulandoEm">Disparando teste em %1$ds...</string>
+    <string name="simulandoSub">Mantenha o dispositivo imóvel ou aguarde simulação</string>
+
     <string name="simulacaoTitulo">Queda Simulada Detectada!</string>
     <string name="simulacaoTexto">O sensor registrou impacto subito seguido de inercia.</string>
     <string name="quedaTituloCurto">Queda Detectada!</string>

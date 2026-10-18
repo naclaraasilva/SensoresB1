@@ -22,6 +22,8 @@ import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +47,10 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 // le os sensores do aparelho e mostra os valores na tela
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -55,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private static final long INTERVALO_GPS = 2000;
     private static final int CODIGO_PERMISSAO_LOCALIZACAO = 1;
 
-    // tempo para o usuario cancelar o alerta de queda
-    private static final long DURACAO_ALERTA = 5000;
+    // tempo para o usuario cancelar o alerta de queda (30 s para falso positivo)
+    private static final long DURACAO_ALERTA = 30000;
     // intervalo entre os envios de telemetria, em milissegundos
     private static final long INTERVALO_TELEMETRIA = 10000;
     // usuario do registro enviado a API, igual ao appMove
@@ -103,14 +109,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView txtStatusApi;
     private TextView txtClima;
     private EditText edtNome;
-    private Button btnPanico;
+    private View btnPanico;
     private View btnContatos;
     private View btnHistorico;
     private View btnEditarTitular;
     private View navPainel;
-    private View navAlerta;
     private View navHistorico;
     private SwitchCompat swCheckin;
+
+    // views do novo front da tela inicial
+    private TextView txtIniciais;
+    private TextView txtRelogio;
+    private TextView txtOnline;
+    private TextView txtBateriaStatus;
+    private TextView txtSimTitulo;
+    private TextView txtSimSub;
 
     // overlay de alerta de queda
     private View painelQueda;
@@ -130,6 +143,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Runnable tarefaCheckin;
     private Runnable tarefaClima;
 
+    // relogio ao vivo do cabecalho e contagem do teste simulado
+    private Runnable tarefaRelogio;
+    private CountDownTimer contadorTeste;
+
     // check-in de seguranca
     private CountDownTimer contadorCheckin;
     private AlertDialog dialogoCheckin;
@@ -140,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // views usadas pelo tema, separadas por tipo
     private View telaPrincipal;
     private ScrollView rolagem;
-    private Button btnSimularQueda;
+    private View btnSimularQueda;
     private MaterialCardView[] cartoesTema;
     private View[] caixasTema;
     private View[] botaoSecundarios;
@@ -237,28 +254,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         txtLuminosidade = findViewById(R.id.txtLuminosidade);
         txtPressao = findViewById(R.id.txtPressao);
         txtTemperatura = findViewById(R.id.txtTemperatura);
-        txtLatitude = findViewById(R.id.txtLatitude);
-        txtLongitude = findViewById(R.id.txtLongitude);
+        txtLatitude = findViewById(R.id.txtLatAtual);
+        txtLongitude = findViewById(R.id.txtLongAtual);
         txtVelocidade = findViewById(R.id.txtVelocidade);
-        txtBateria = findViewById(R.id.txtBateria);
-        txtDeviceId = findViewById(R.id.txtDeviceId);
+        txtBateria = findViewById(R.id.txtBateriaTopo);
+        txtBateriaStatus = findViewById(R.id.txtBateriaStatus);
+        txtOnline = findViewById(R.id.txtOnline);
+        txtDeviceId = findViewById(R.id.txtIdAparelho);
         txtModelo = findViewById(R.id.txtModelo);
         txtQueda = findViewById(R.id.txtQueda);
         txtStatusApi = findViewById(R.id.txtStatusApi);
-        edtNome = findViewById(R.id.edtNome);
-        btnPanico = findViewById(R.id.btnPanico);
+        edtNome = findViewById(R.id.edtNomeTitular);
+        txtIniciais = findViewById(R.id.txtIniciais);
+        txtRelogio = findViewById(R.id.txtRelogio);
+        txtSimTitulo = findViewById(R.id.txtSimTitulo);
+        txtSimSub = findViewById(R.id.txtSimSub);
+        btnPanico = findViewById(R.id.btnPanicoPrincipal);
         txtClima = findViewById(R.id.txtClima);
         btnContatos = findViewById(R.id.btnContatos);
         btnHistorico = findViewById(R.id.btnHistorico);
         swCheckin = findViewById(R.id.swCheckin);
-        btnEditarTitular = findViewById(R.id.btnEditarTitular);
+        btnEditarTitular = findViewById(R.id.btnEditarTitularBanner);
         navPainel = findViewById(R.id.navPainel);
-        navAlerta = findViewById(R.id.navAlerta);
         navHistorico = findViewById(R.id.navHistorico);
 
         telaPrincipal = findViewById(R.id.main);
         rolagem = (ScrollView) telaPrincipal;
-        btnSimularQueda = findViewById(R.id.btnSimularQueda);
+        btnSimularQueda = findViewById(R.id.btnSimularTeste);
         painelQueda = findViewById(R.id.painelQueda);
         txtContagem = findViewById(R.id.txtContagem);
         txtBateriaAlerta = findViewById(R.id.txtBateriaAlerta);
@@ -312,11 +334,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-        // botao que testa a deteccao sem derrubar o celular
+        // botao que testa a deteccao: espera 3 s e dispara a queda simulada
         btnSimularQueda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                detectorQueda.simularQueda();
+                iniciarTesteSimulado();
+            }
+        });
+
+        // abre o app de mapas com a posicao atual do GPS
+        findViewById(R.id.btnMapa).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirMapa();
             }
         });
 
@@ -368,17 +398,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+        // as iniciais do banner acompanham o nome digitado
+        atualizarIniciais(edtNome.getText().toString());
+        edtNome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence texto, int inicio, int antes, int total) {
+                // vazio, obrigatorio pela interface
+            }
+
+            @Override
+            public void onTextChanged(CharSequence texto, int inicio, int antes, int total) {
+                atualizarIniciais(texto.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable texto) {
+                // vazio, obrigatorio pela interface
+            }
+        });
+
         // navegacao do rodape
         navPainel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rolagem.smoothScrollTo(0, 0);
-            }
-        });
-        navAlerta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rolarAte(findViewById(R.id.cartaoQueda));
             }
         });
         navHistorico.setOnClickListener(new View.OnClickListener() {
@@ -432,6 +475,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         };
 
+        // relogio ao vivo do cabecalho, atualizado por segundo
+        tarefaRelogio = new Runnable() {
+            @Override
+            public void run() {
+                atualizarRelogio();
+                atualizador.postDelayed(this, 1000);
+            }
+        };
+
         gerenciador = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAcelerometro = gerenciador.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorGiroscopio = gerenciador.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -478,10 +530,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             txtLatitude.setText(getString(R.string.semGps));
         }
 
-        // nivel da bateria
+        // nivel da bateria, exibido no cabecalho e no cartao de status
         BatteryManager gerenciadorBateria = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
         int nivelBateria = gerenciadorBateria.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-        txtBateria.setText(getString(R.string.formatoBateria, nivelBateria));
+        txtBateria.setText(getString(R.string.formatoBateriaCurta, nivelBateria));
+        txtBateriaStatus.setText(getString(R.string.formatoBateriaCurta, nivelBateria));
+        txtOnline.setText(getString(R.string.formatoOnline, nivelBateria));
         txtBateriaAlerta.setText(getString(R.string.formatoBateriaCurta, nivelBateria));
 
         // identidade do aparelho, igual ao appMove
@@ -506,14 +560,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         controlador.setAppearanceLightNavigationBars(false);
 
         final View rodape = findViewById(R.id.navRodape);
+        final View cabecalhoTopo = findViewById(R.id.cabecalhoTopo);
         final ScrollView rolagemAlerta = findViewById(R.id.rolagemAlerta);
         final int alturaRodape = getResources().getDimensionPixelSize(R.dimen.alturaRodape);
+        final int alturaTopo = getResources().getDimensionPixelSize(R.dimen.alturaTopo);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.raizPrincipal),
                 new OnApplyWindowInsetsListener() {
                     @Override
                     public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                         Insets barras = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                        // cabecalho fixo comeca abaixo da barra de status
+                        ViewGroup.LayoutParams pCabecalho = cabecalhoTopo.getLayoutParams();
+                        pCabecalho.height = alturaTopo + barras.top;
+                        cabecalhoTopo.setLayoutParams(pCabecalho);
+                        cabecalhoTopo.setPadding(cabecalhoTopo.getPaddingLeft(), barras.top,
+                                cabecalhoTopo.getPaddingRight(), 0);
 
                         // rodape sobe acima da barra de navegacao
                         rodape.setPadding(rodape.getPaddingLeft(), 0,
@@ -522,7 +585,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         pRodape.height = alturaRodape + barras.bottom;
                         rodape.setLayoutParams(pRodape);
 
-                        // o conteudo comeca abaixo da barra de status e termina antes do rodape
+                        // o conteudo comeca logo abaixo da barra de status e termina antes do rodape
                         rolagem.setPadding(rolagem.getPaddingLeft(), barras.top,
                                 rolagem.getPaddingRight(), alturaRodape + barras.bottom);
 
@@ -601,6 +664,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // comeca a telemetria periodica
         atualizador.postDelayed(tarefaTelemetria, INTERVALO_TELEMETRIA);
 
+        // comeca o relogio ao vivo do cabecalho
+        atualizador.post(tarefaRelogio);
+
         // retoma o check-in se estiver ligado e busca o clima
         agendarCheckin();
         atualizador.postDelayed(tarefaClima, 5000);
@@ -613,6 +679,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // para a telemetria enquanto a tela nao esta visivel
         atualizador.removeCallbacks(tarefaTelemetria);
+
+        // para o relogio do cabecalho
+        atualizador.removeCallbacks(tarefaRelogio);
 
         // pausa o check-in e o clima
         atualizador.removeCallbacks(tarefaCheckin);
@@ -689,6 +758,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     // mostra o overlay com a contagem regressiva e comeca a vibrar
     private void iniciarAlertaQueda() {
+        // para a contagem anterior se ainda estiver rodando, senao o timer
+        // antigo dispara o envio e grava queda repetida no historico
+        if (contadorAlerta != null) {
+            contadorAlerta.cancel();
+        }
         painelQueda.setVisibility(View.VISIBLE);
         vibrar();
 
@@ -745,6 +819,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // o usuario disse que esta bem: foi um falso positivo
         HistoricoDbHelper.registrar(this, "falso positivo",
                 getString(R.string.motivoFalsoPositivo));
+        // alerta encerrado: libera o detector para uma nova queda
+        detectorQueda.rearmar();
     }
 
     // vibra em pulsos enquanto o alerta esta na tela
@@ -834,6 +910,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // registra no historico no mesmo momento em que a queda vai para a API
         HistoricoDbHelper.registrar(this, "queda", getString(R.string.motivoQueda));
         enviarAlertaEmergencia(getString(R.string.motivoQueda), Double.valueOf(ultimoGMax));
+        // alerta encerrado: libera o detector para uma nova queda
+        detectorQueda.rearmar();
     }
 
     // alerta disparado quando o check-in fica sem resposta
@@ -949,6 +1027,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     // pinta fundo, cartoes, caixas e botoes conforme o tema
     private void aplicarTema(boolean escuro) {
+        // o novo front e fixo no tema escuro
+        escuro = true;
         int corFundo = ContextCompat.getColor(this,
                 escuro ? R.color.surfaceDim : R.color.deepForest);
         telaPrincipal.setBackgroundColor(corFundo);
@@ -969,10 +1049,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         for (View botao : botaoSecundarios) {
             botao.setBackgroundResource(fundoBotao);
         }
-
-        btnSimularQueda.setBackgroundResource(escuro ? R.drawable.fundo_pill_escura
-                : R.drawable.fundo_pill);
-        btnSimularQueda.setTextColor(ContextCompat.getColor(this, R.color.limeAccent));
     }
 
     // converte a leitura de um eixo em porcentagem da barra (0 a 100)
@@ -984,6 +1060,65 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return Math.round(porcentagem);
     }
 
+    // mostra as iniciais do titular no circulo do banner (ate duas palavras)
+    private void atualizarIniciais(String nome) {
+        StringBuilder iniciais = new StringBuilder();
+        for (String palavra : nome.trim().split("\\s+")) {
+            if (palavra.isEmpty() || iniciais.length() >= 2) {
+                continue;
+            }
+            iniciais.append(palavra.charAt(0));
+        }
+        if (iniciais.length() == 0) {
+            txtIniciais.setText(R.string.iniciaisPadrao);
+        } else {
+            txtIniciais.setText(iniciais.toString());
+        }
+    }
+
+    // mostra a hora atual no cabecalho no formato HH:mm:ss
+    private void atualizarRelogio() {
+        SimpleDateFormat formato = new SimpleDateFormat("HH:mm:ss", new Locale("pt", "BR"));
+        txtRelogio.setText(getString(R.string.formatoRelogio, formato.format(new Date())));
+    }
+
+    // contagem de 3 s no proprio botao antes de disparar o teste de queda
+    private void iniciarTesteSimulado() {
+        if (contadorTeste != null) {
+            return;
+        }
+        txtSimTitulo.setText(getString(R.string.simulandoEm, 3));
+        txtSimSub.setText(R.string.simulandoSub);
+        btnSimularQueda.setEnabled(false);
+        contadorTeste = new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisRestantes) {
+                int segundos = (int) (millisRestantes / 1000);
+                txtSimTitulo.setText(getString(R.string.simulandoEm, segundos));
+            }
+
+            @Override
+            public void onFinish() {
+                contadorTeste = null;
+                btnSimularQueda.setEnabled(true);
+                txtSimTitulo.setText(R.string.btnSimularTitulo);
+                txtSimSub.setText(R.string.btnSimularSub);
+                detectorQueda.simularQueda();
+            }
+        };
+        contadorTeste.start();
+    }
+
+    // abre o app de mapas na posicao atual do GPS
+    private void abrirMapa() {
+        try {
+            String link = "geo:" + ultimaLatitude + "," + ultimaLongitude;
+            startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(link)));
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.erroGenerico, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // abre a tela de historico de eventos
     private void abrirHistorico() {
         try {
@@ -993,22 +1128,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    // rola a tela principal ate a view indicada
-    private void rolarAte(View alvo) {
-        if (alvo == null) {
-            return;
-        }
-        int deslocamento = 0;
-        View atual = alvo;
-        View pai = (View) atual.getParent();
-        while (pai != null && pai != rolagem) {
-            deslocamento += (int) atual.getY();
-            atual = pai;
-            pai = (View) atual.getParent();
-        }
-        deslocamento += (int) atual.getY();
-        rolagem.smoothScrollTo(0, deslocamento);
-    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int precisao) {
@@ -1020,6 +1140,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onDestroy();
         if (contadorAlerta != null) {
             contadorAlerta.cancel();
+        }
+        if (contadorTeste != null) {
+            contadorTeste.cancel();
         }
         if (contadorCheckin != null) {
             contadorCheckin.cancel();

@@ -1,16 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- cartao de um evento do historico: icone por tipo, titulo, descricao e data -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/fundo_caixa"
-    android:orientation="vertical"
+    android:background="@drawable/fundo_botao_simular"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/txtItemEvento"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/quadroItem"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/fundo_tipo">
+
+        <ImageView
+            android:id="@+id/iconeItem"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/historicoTitulo"
+            android:src="@drawable/ic_history"
+            app:tint="@color/sandCream" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/sandCream"
-        android:textSize="15sp" />
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtItemTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/sandCream"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtItemDescricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/sandCream70"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtItemData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="monospace"
+        android:textColor="@color/sandCream70"
+        android:textSize="11sp" />
 </LinearLayout>

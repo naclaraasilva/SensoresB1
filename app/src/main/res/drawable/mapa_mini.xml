@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- mini mapa ilustrativo: ruas, rota e pino da posicao atual -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="112dp"
+    android:viewportWidth="360"
+    android:viewportHeight="112">
+
+    <!-- ruas -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,28 L360,28"
+        android:strokeColor="#FF006060"
+        android:strokeWidth="6" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,76 L360,76"
+        android:strokeColor="#FF006060"
+        android:strokeWidth="6" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M70,0 L70,112"
+        android:strokeColor="#FF006060"
+        android:strokeWidth="6" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M180,0 L180,112"
+        android:strokeColor="#FF006060"
+        android:strokeWidth="6" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M290,0 L290,112"
+        android:strokeColor="#FF006060"
+        android:strokeWidth="6" />
+
+    <!-- avenida principal e rota -->
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M-10,102 L120,64 L210,78 L300,30"
+        android:strokeColor="#FF007878"
+        android:strokeWidth="10" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M20,104 L120,64 L210,78 L300,30"
+        android:strokeColor="#FFA8C030"
+        android:strokeWidth="4" />
+
+    <!-- pino da posicao atual -->
+    <path
+        android:fillColor="#FFA8C030"
+        android:pathData="M300,30 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0 Z" />
+    <path
+        android:fillColor="#FF184848"
+        android:pathData="M300,30 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 Z" />
+</vector>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- quadro do icone do evento; a cor e pintada pelo adapter conforme o tipo -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/sandCream" />
+    <corners android:radius="8dp" />
+</shape>

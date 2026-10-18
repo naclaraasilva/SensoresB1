@@ -12,7 +12,7 @@
     <dimen name="alturaRodape">64dp</dimen>
     <dimen name="tamanhoAnel">160dp</dimen>
     <dimen name="tamanhoContagem">56sp</dimen>
-    <dimen name="alturaMapa">96dp</dimen>
+    <dimen name="alturaMapa">112dp</dimen>
     <dimen name="larguraSparkline">140dp</dimen>
     <dimen name="alturaPanico">64dp</dimen>
 </resources>
