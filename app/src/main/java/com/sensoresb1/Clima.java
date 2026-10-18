@@ -22,7 +22,7 @@ public class Clima {
 
     // chave da OpenWeatherMap: troque pela sua (nao e uma lib nova, so um texto)
 
-    //public static final String CHAVE_OPENWEATHER = "";
+
 
     // acima deste vento (m/s) consideramos vento forte
     private static final double LIMIAR_VENTO = 10.0;
