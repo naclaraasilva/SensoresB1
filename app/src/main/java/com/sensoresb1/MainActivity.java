@@ -51,28 +51,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-// le os sensores do aparelho e mostra os valores na tela
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-    // abaixo deste valor de lux a tela fica no tema escuro
+
     private static final float LIMIAR_LUZ = 50;
 
-    // intervalo entre atualizacoes do GPS, em milissegundos
     private static final long INTERVALO_GPS = 2000;
     private static final int CODIGO_PERMISSAO_LOCALIZACAO = 1;
     private static final int CODIGO_PERMISSAO_SMS = 2;
 
-    // tempo para o usuario cancelar o alerta de queda (30 s para falso positivo)
-    private static final long DURACAO_ALERTA = 30000;
-    // intervalo entre os envios de telemetria, em milissegundos
-    private static final long INTERVALO_TELEMETRIA = 10000;
-    // usuario do registro enviado a API, igual ao appMove
-    private static final String USUARIO_PADRAO = "aluno";
 
-    // check-in de seguranca: intervalo entre perguntas e tempo de resposta
+    private static final long DURACAO_ALERTA = 30000;
+
+    private static final long INTERVALO_TELEMETRIA = 10000;
+
+    private static final String USUARIO_PADRAO = "naclarinha";
+
+
     private static final int CHECKIN_INTERVALO_MINUTOS = 15;
     private static final long CHECKIN_RESPOSTA_MS = 30000;
-    // intervalo entre consultas de clima, em milissegundos
+
     private static final long CLIMA_INTERVALO = 600000;
 
     private static final String PREFS_CONFIG = "config";

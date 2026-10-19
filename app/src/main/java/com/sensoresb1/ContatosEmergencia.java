@@ -5,140 +5,89 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.text.InputType;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// cadastro e uso dos contatos de emergencia, guardados em SharedPreferences
+// cadastro e uso do contato de emergencia, guardado em SharedPreferences
 public class ContatosEmergencia {
 
     private static final String PREFS = "contatos_emergencia";
-    // indice do telefone marcado como contato principal
-    private static final String CHAVE_PRINCIPAL = "principal";
-    public static final int MAX_CONTATOS = 3;
+    private static final String CHAVE_TELEFONE = "telefone0";
+    private static final String CHAVE_NOME = "nome0";
 
     private ContatosEmergencia() {
         // classe so com metodos estaticos
     }
 
-    // le os telefones salvos, ignorando os vazios
+    // le o telefone salvo, ignorando o vazio
     public static List<String> obterTelefones(Context contexto) {
         List<String> telefones = new ArrayList<>();
-        SharedPreferences prefs = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        for (int i = 0; i < MAX_CONTATOS; i++) {
-            String telefone = prefs.getString("telefone" + i, "").trim();
-            if (!telefone.isEmpty()) {
-                telefones.add(telefone);
-            }
+        String telefone = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(CHAVE_TELEFONE, "").trim();
+        if (!telefone.isEmpty()) {
+            telefones.add(telefone);
         }
         return telefones;
     }
 
-    // telefone marcado como principal; sem marcacao, usa o primeiro preenchido
-    public static String obterTelefonePrincipal(Context contexto) {
-        SharedPreferences prefs = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        int indice = prefs.getInt(CHAVE_PRINCIPAL, -1);
-        if (indice >= 0 && indice < MAX_CONTATOS) {
-            String marcado = prefs.getString("telefone" + indice, "").trim();
-            if (!marcado.isEmpty()) {
-                return marcado;
-            }
-        }
-        List<String> telefones = obterTelefones(contexto);
-        if (telefones.isEmpty()) {
-            return "";
-        }
-        return telefones.get(0);
+    // nome do contato de emergencia; sem cadastro devolve vazio
+    public static String obterNome(Context contexto) {
+        return contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(CHAVE_NOME, "").trim();
     }
 
-    // abre o dialogo para cadastrar de 1 a 3 telefones e marcar o principal
+    // telefone unico cadastrado; sem cadastro devolve vazio
+    public static String obterTelefonePrincipal(Context contexto) {
+        return contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(CHAVE_TELEFONE, "").trim();
+    }
+
+    // abre o dialogo para cadastrar o contato de emergencia
     public static void mostrarDialogo(final Activity tela) {
         try {
             final SharedPreferences prefs = tela.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 
-            LinearLayout layout = new LinearLayout(tela);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setPadding(40, 16, 40, 0);
+            View conteudo = LayoutInflater.from(tela).inflate(
+                    R.layout.dialog_contato_emergencia, null);
+            final EditText campoNome = conteudo.findViewById(R.id.edtNome);
+            final EditText campo = conteudo.findViewById(R.id.edtTelefone);
+            campoNome.setText(prefs.getString(CHAVE_NOME, ""));
+            campo.setText(prefs.getString(CHAVE_TELEFONE, ""));
 
-            final EditText[] campos = new EditText[MAX_CONTATOS];
-            final RadioButton[] marcadores = new RadioButton[MAX_CONTATOS];
-            int principal = prefs.getInt(CHAVE_PRINCIPAL, -1);
-
-            for (int i = 0; i < MAX_CONTATOS; i++) {
-                // cada linha tem o telefone e o marcador de contato principal
-                LinearLayout linha = new LinearLayout(tela);
-                linha.setOrientation(LinearLayout.HORIZONTAL);
-                linha.setGravity(Gravity.CENTER_VERTICAL);
-
-                EditText campo = new EditText(tela);
-                campo.setInputType(InputType.TYPE_CLASS_PHONE);
-                campo.setHint(tela.getString(R.string.contatoHint, i + 1));
-                campo.setText(prefs.getString("telefone" + i, ""));
-                campo.setLayoutParams(new LinearLayout.LayoutParams(0,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-                linha.addView(campo);
-                campos[i] = campo;
-
-                RadioButton marcador = new RadioButton(tela);
-                marcador.setText(R.string.contatoPrincipal);
-                marcador.setChecked(i == principal);
-                linha.addView(marcador);
-                marcadores[i] = marcador;
-                // fora do RadioGroup a marcacao precisa ser controlada na mao
-                marcarApenasUm(marcadores, marcador, i);
-
-                layout.addView(linha);
-            }
-
-            new AlertDialog.Builder(tela)
-                    .setTitle(R.string.contatosTitulo)
-                    .setView(layout)
+            AlertDialog dialogo = new AlertDialog.Builder(tela, R.style.TemaDialogoEmergencia)
+                    .setView(conteudo)
                     .setPositiveButton(R.string.salvar, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogo, int qual) {
-                            SharedPreferences.Editor editor = prefs.edit();
-                            int escolhido = -1;
-                            for (int i = 0; i < MAX_CONTATOS; i++) {
-                                String telefone = campos[i].getText().toString().trim();
-                                editor.putString("telefone" + i, telefone);
-                                // marcador so vale se a linha tiver numero
-                                if (marcadores[i].isChecked() && !telefone.isEmpty()) {
-                                    escolhido = i;
-                                }
-                            }
-                            editor.putInt(CHAVE_PRINCIPAL, escolhido);
-                            editor.apply();
-                            Toast.makeText(tela, R.string.contatosSalvos, Toast.LENGTH_SHORT).show();
+                        public void onClick(DialogInterface d, int qual) {
+                            String nome = campoNome.getText().toString().trim();
+                            String telefone = campo.getText().toString().trim();
+                            prefs.edit()
+                                    .putString(CHAVE_NOME, nome)
+                                    .putString(CHAVE_TELEFONE, telefone)
+                                    .apply();
+                            Toast.makeText(tela, R.string.contatosSalvos,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton(R.string.cancelar, null)
-                    .show();
+                    .create();
+            dialogo.show();
+
+            // botoes no mesmo tom de destaque do restante do app
+            int destaque = ContextCompat.getColor(tela, R.color.limeAccent);
+            dialogo.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(destaque);
+            dialogo.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(destaque);
         } catch (Exception e) {
             Toast.makeText(tela, R.string.erroGenerico, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // deixa ligado so o marcador tocado, desligando os outros
-    private static void marcarApenasUm(final RadioButton[] marcadores, RadioButton marcador,
-                                       final int indice) {
-        marcador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int j = 0; j < marcadores.length; j++) {
-                    marcadores[j].setChecked(j == indice);
-                }
-            }
-        });
     }
 
     // abre um app de SMS/WhatsApp com a mensagem e o link do mapa
@@ -148,17 +97,10 @@ public class ContatosEmergencia {
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, mensagem);
 
-            List<String> telefones = obterTelefones(tela);
-            if (!telefones.isEmpty()) {
-                StringBuilder numeros = new StringBuilder();
-                for (int i = 0; i < telefones.size(); i++) {
-                    if (i > 0) {
-                        numeros.append(";");
-                    }
-                    numeros.append(telefones.get(i));
-                }
+            String telefone = obterTelefonePrincipal(tela);
+            if (!telefone.isEmpty()) {
                 // alguns apps usam este extra para preencher o destinatario
-                intent.putExtra("address", numeros.toString());
+                intent.putExtra("address", telefone);
             }
 
             tela.startActivity(Intent.createChooser(intent, tela.getString(R.string.enviarVia)));

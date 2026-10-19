@@ -62,14 +62,17 @@
     <string name="formatoModelo">Modelo: %1$s</string>
     <string name="formatoQueda">Queda detectada! gMax: %1$.2f g</string>
 
-    <string name="contatosTitulo">Contatos de emergencia</string>
-    <string name="contatoHint">Telefone %1$d</string>
+    <string name="contatosTitulo">Contato de emergencia</string>
+    <string name="contatoNomeLabel">Nome do contato</string>
+    <string name="contatoNomeHint">Nome completo</string>
+    <string name="contatoTelefoneLabel">Numero do contato</string>
+    <string name="contatoTelefoneHint">Telefone com DDD</string>
+    <string name="contatoAjuda">Em caso de queda ou panico, o SMS e a mensagem de ajuda com a localizacao sao enviados para este contato.</string>
     <string name="salvar">Salvar</string>
     <string name="cancelar">Cancelar</string>
-    <string name="contatosSalvos">Contatos salvos</string>
+    <string name="contatosSalvos">Contato de emergencia salvo</string>
     <string name="enviarVia">Enviar via</string>
     <string name="erroGenerico">Nao foi possivel concluir a acao</string>
-    <string name="contatoPrincipal">Principal</string>
     <string name="smsSemPermissao">Permissao de SMS negada</string>
     <string name="smsSemContato">Nenhum contato de emergencia cadastrado</string>
     <string name="smsEnviado">SMS enviado para %1$s</string>
@@ -133,7 +136,7 @@
     <string name="checkinCardTitulo">Check-in Automatico de Seguranca</string>
     <string name="checkinCardSub">Pergunta a cada 15 minutos se voce esta bem</string>
     <string name="contatosCardTitulo">Gerenciar Contatos de Emergencia</string>
-    <string name="contatosCardSub">3 contatos prioritarios configurados</string>
+    <string name="contatosCardSub">Cadastro unico de contato prioritario</string>
     <string name="historicoCardTitulo">Ver Historico de Quedas</string>
     <string name="historicoCardSub">Ultimo evento registrado: Ha 14 dias (Falso alarme)</string>
     <string name="textoPanico">BOTAO DE PANICO / SOS</string>
