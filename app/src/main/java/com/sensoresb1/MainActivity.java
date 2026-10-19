@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // intervalo entre atualizacoes do GPS, em milissegundos
     private static final long INTERVALO_GPS = 2000;
     private static final int CODIGO_PERMISSAO_LOCALIZACAO = 1;
+    private static final int CODIGO_PERMISSAO_SMS = 2;
 
     // tempo para o usuario cancelar o alerta de queda (30 s para falso positivo)
     private static final long DURACAO_ALERTA = 30000;
@@ -530,6 +531,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             txtLatitude.setText(getString(R.string.semGps));
         }
 
+        // permissao do SMS automatico de emergencia
+        pedirPermissaoSms();
+
         // nivel da bateria, exibido no cabecalho e no cartao de status
         BatteryManager gerenciadorBateria = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
         int nivelBateria = gerenciadorBateria.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
@@ -610,6 +614,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+    // pede a permissao de SMS, necessaria para o envio automatico
+    private void pedirPermissaoSms() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.SEND_SMS}, CODIGO_PERMISSAO_SMS);
+    }
+
     // comeca a receber posicoes do GPS a cada dois segundos
     private void iniciarLocalizacao() {
         try {
@@ -628,6 +642,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 iniciarLocalizacao();
             } else {
                 txtLatitude.setText(getString(R.string.permissaoNegada));
+            }
+        }
+        if (codigo == CODIGO_PERMISSAO_SMS) {
+            // sem a permissao o SMS automatico nao sai, o resto do alerta continua igual
+            if (resultados.length == 0
+                    || resultados[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, R.string.smsSemPermissao, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -909,6 +930,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void enviarAlertaQueda() {
         // registra no historico no mesmo momento em que a queda vai para a API
         HistoricoDbHelper.registrar(this, "queda", getString(R.string.motivoQueda));
+        // SMS automatico para o contato principal marcado no cadastro
+        enviarSmsSocorro(getString(R.string.motivoQueda));
         enviarAlertaEmergencia(getString(R.string.motivoQueda), Double.valueOf(ultimoGMax));
         // alerta encerrado: libera o detector para uma nova queda
         detectorQueda.rearmar();
@@ -941,12 +964,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // abre um app de SMS/WhatsApp com o texto de ajuda e o link do mapa
     private void abrirMensagem(String motivo) {
         try {
-            String link = "https://maps.google.com/?q=" + ultimaLatitude + "," + ultimaLongitude;
-            String texto = getString(R.string.mensagemAlerta, lerUsuario(), motivo, link);
-            ContatosEmergencia.enviarMensagem(this, texto);
+            ContatosEmergencia.enviarMensagem(this, montarMensagemAlerta(motivo));
         } catch (Exception e) {
             // sem contatos ou sem app de mensagem: segue sem quebrar
         }
+    }
+
+    // texto de socorro enviado ao contato de emergencia
+    private String montarMensagemAlerta(String motivo) {
+        String link = "https://maps.google.com/?q=" + ultimaLatitude + "," + ultimaLongitude;
+        return getString(R.string.mensagemAlerta, lerUsuario(), motivo, link);
+    }
+
+    // SMS automatico para o contato principal, alem da mensagem manual
+    private void enviarSmsSocorro(String motivo) {
+        SmsEmergencia.enviar(this, montarMensagemAlerta(motivo),
+                new SmsEmergencia.RespostaListener() {
+                    @Override
+                    public void onSucesso(String mensagem) {
+                        Toast.makeText(MainActivity.this, mensagem, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onErro(String mensagem) {
+                        Toast.makeText(MainActivity.this, mensagem, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     // agenda a proxima pergunta de check-in, se estiver ligado

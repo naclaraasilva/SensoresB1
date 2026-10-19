@@ -69,6 +69,11 @@
     <string name="contatosSalvos">Contatos salvos</string>
     <string name="enviarVia">Enviar via</string>
     <string name="erroGenerico">Nao foi possivel concluir a acao</string>
+    <string name="contatoPrincipal">Principal</string>
+    <string name="smsSemPermissao">Permissao de SMS negada</string>
+    <string name="smsSemContato">Nenhum contato de emergencia cadastrado</string>
+    <string name="smsEnviado">SMS enviado para %1$s</string>
+    <string name="smsErro">Erro no SMS: %1$s</string>
     <string name="tituloSeguranca">Seguranca e Clima</string>
     <string name="btnContatos">Contatos de emergencia</string>
     <string name="btnHistorico">Historico de eventos</string>
